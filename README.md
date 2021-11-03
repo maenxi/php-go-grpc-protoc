@@ -68,3 +68,11 @@ error = 0 | msg = ok
 1: token = token2 | name = name=wahaha | login = 2
 
 ```
+
+> grpcui-界面工具
+```
+go get github.com/fullstorydev/grpcui
+go install github.com/fullstorydev/grpcui/cmd/grpcui
+
+rpcui -plaintext localhost:8002 // 弹出ui界面
+```

@@ -5,10 +5,10 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/reflection"
 	"net"
 	"php-go-grpc-protoc/services"
 )
-
 
 //实现接口
 type personService struct{}
@@ -20,7 +20,7 @@ func (p personService) GetPersonInfo(ctx context.Context, in *services.PersonInf
 
 	personData := services.PersonRespData{
 		Token: "token",
-		Name: fmt.Sprintf("name=%d", in.GetId()),
+		Name:  fmt.Sprintf("name=%d", in.GetId()),
 		Login: 1,
 	}
 	resp.Data = &personData
@@ -33,12 +33,12 @@ func (p personService) GetPersonList(ctx context.Context, in *services.PersonLis
 	personListData := []*services.PersonRespData{
 		{
 			Token: "token",
-			Name: fmt.Sprintf("name=%s", in.GetName()),
+			Name:  fmt.Sprintf("name=%s", in.GetName()),
 			Login: 1,
 		},
 		{
 			Token: "token2",
-			Name: fmt.Sprintf("name=%s", in.GetName()),
+			Name:  fmt.Sprintf("name=%s", in.GetName()),
 			Login: 2,
 		},
 	}
@@ -46,14 +46,16 @@ func (p personService) GetPersonList(ctx context.Context, in *services.PersonLis
 	return resp, nil
 }
 
-func main()  {
+func main() {
 	listen, err := net.Listen("tcp", ":8002")
 	if err != nil {
 		grpclog.Fatalf("Failed to listen: %v", err)
 	}
-	fmt.Println("Listen on 8002" )
+	fmt.Println("Listen on 8002")
 	// 实例化
 	s := grpc.NewServer()
+	// grpc反射出去 ui界面可访问
+	reflection.Register(s)
 	// 注册
 	services.RegisterPersonServiceServer(s, personService{})
 	s.Serve(listen)
