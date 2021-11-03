@@ -1,0 +1,36 @@
+syntax="proto3"; // 指定proto版本
+package services;  // 指定默认包名
+// 指定golang包名
+option go_package = "./;services";
+
+// 定义list请求
+message PersonListReq {
+  string Name=1;
+}
+// 定义list响应
+message PersonListResp {
+  int32 Error=1;
+  string Msg=2;
+  repeated PersonRespData data=3;
+}
+message PersonRespData {
+  string token=1;
+  string Name=2;
+  int32 login=3;
+}
+
+message PersonInfoReq {
+  int32 Id=1;
+}
+
+message PersonInfoResp {
+  int32 Error=1;
+  string Msg=2;
+  PersonRespData data=3;
+}
+
+// 定义服务
+service PersonService {
+  rpc GetPersonList (PersonListReq) returns (PersonListResp) {}
+  rpc GetPersonInfo (PersonInfoReq) returns (PersonInfoResp) {}
+}
