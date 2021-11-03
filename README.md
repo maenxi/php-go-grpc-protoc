@@ -74,5 +74,5 @@ error = 0 | msg = ok
 go get github.com/fullstorydev/grpcui
 go install github.com/fullstorydev/grpcui/cmd/grpcui
 
-rpcui -plaintext localhost:8002 // 弹出ui界面
+grpcui -plaintext localhost:8002 // 弹出ui界面
 ```
